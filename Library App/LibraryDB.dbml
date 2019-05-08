@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Library" Class="LibraryDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=EHAB-PC\SQLEXPRESS;Initial Catalog=Library;Integrated Security=True" SettingsObjectName="Library_App.Properties.Settings" SettingsPropertyName="LibraryConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.tbl_AdminDetails" Member="tbl_AdminDetails">
+    <Type Name="tbl_AdminDetail">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Salary" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="HireDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Shift" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="tbl_User_tbl_AdminDetail" Member="tbl_User" ThisKey="UserID" OtherKey="ID" Type="tbl_User" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_User" Member="tbl_Users">
+    <Type Name="tbl_User">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FName" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="SName" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Birthdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="NationalID" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="RoleName" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="tbl_User_tbl_AdminDetail" Member="tbl_AdminDetail" ThisKey="ID" OtherKey="UserID" Type="tbl_AdminDetail" Cardinality="One" />
+      <Association Name="tbl_User_tbl_Borrow" Member="tbl_Borrows" ThisKey="ID" OtherKey="UserID" Type="tbl_Borrow" />
+      <Association Name="tbl_User_tbl_Student" Member="tbl_Student" ThisKey="ID" OtherKey="User_ID" Type="tbl_Student" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Author" Member="tbl_Authors">
+    <Type Name="tbl_Author">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="Birthdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Association Name="tbl_Author_tbl_Book" Member="tbl_Books" ThisKey="ID" OtherKey="AuthorID" Type="tbl_Book" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Book" Member="tbl_Books">
+    <Type Name="tbl_Book">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ISBN" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PublisherID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="Genre" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Copies" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="tbl_Book_tbl_Borrow" Member="tbl_Borrows" ThisKey="ID" OtherKey="BookID" Type="tbl_Borrow" />
+      <Association Name="tbl_Book_tbl_Edition" Member="tbl_Editions" ThisKey="ID" OtherKey="BookID" Type="tbl_Edition" />
+      <Association Name="tbl_Author_tbl_Book" Member="tbl_Author" ThisKey="AuthorID" OtherKey="ID" Type="tbl_Author" IsForeignKey="true" />
+      <Association Name="tbl_Publisher_tbl_Book" Member="tbl_Publisher" ThisKey="PublisherID" OtherKey="ID" Type="tbl_Publisher" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Borrow" Member="tbl_Borrows">
+    <Type Name="tbl_Borrow">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BookID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="tbl_Book_tbl_Borrow" Member="tbl_Book" ThisKey="BookID" OtherKey="ID" Type="tbl_Book" IsForeignKey="true" />
+      <Association Name="tbl_User_tbl_Borrow" Member="tbl_User" ThisKey="UserID" OtherKey="ID" Type="tbl_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Edition" Member="tbl_Editions">
+    <Type Name="tbl_Edition">
+      <Column Name="Pages" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Version" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BookID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="tbl_Book_tbl_Edition" Member="tbl_Book" ThisKey="BookID" OtherKey="ID" Type="tbl_Book" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Publisher" Member="tbl_Publishers">
+    <Type Name="tbl_Publisher">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(45) NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(45)" CanBeNull="true" />
+      <Association Name="tbl_Publisher_tbl_Book" Member="tbl_Books" ThisKey="ID" OtherKey="PublisherID" Type="tbl_Book" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl_Student" Member="tbl_Students">
+    <Type Name="tbl_Student">
+      <Column Name="University" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="University_ID" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="GPA" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="User_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="tbl_User_tbl_Student" Member="tbl_User" ThisKey="User_ID" OtherKey="ID" Type="tbl_User" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
